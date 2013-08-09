@@ -1,0 +1,2 @@
+var startgame = function() {
+};
