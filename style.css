@@ -3,3 +3,8 @@ html {
 	width: 100%;
 	cursor: url(images/rocket.png) 0 0, hand;
 }
+.enemy {
+	height: 128px;
+	width: 128px;
+	background-image: url(images/asteroid.png);
+}
