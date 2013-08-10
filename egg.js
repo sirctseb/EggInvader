@@ -21,6 +21,21 @@ Game.prototype.update = function(time) {
 	var this_ = this;
 	// window.requestAnimationFrame(function(time) {this_.update(time)});
 };
+var Health = function() {
+	this.viewWidth = 200;
+	this.value = 1;
+	this.element = document.getElementById("health");
+};
+Health.prototype.reduce = function() {
+	if(this.value > 0.5) {
+		this.value -= 0.1;
+	} else {
+		this.value *= 0.66;
+	}
+};
+Health.prototype.updateView = function() {
+	this.element.style.width = Math.floor(this.viewWidth * this.value).toString() + 'px';
+};
 
 // Object to represent an enemy
 var Enemy = function() {

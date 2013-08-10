@@ -9,3 +9,8 @@ html {
 	background-image: url(images/asteroid.png);
 	position: absolute;
 }
+#health {
+	width: 200px;
+	height: 10px;
+	background-color: red;
+}
