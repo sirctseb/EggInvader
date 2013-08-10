@@ -9,6 +9,7 @@ var Game = function() {
 	}
 	this.lastTime = 0;
 	this.mouseLocation = {};
+	this.health = new Health();
 	var this_ = this;
 	var mouseUpdate = function(event) {
 		this_.updateMouse(event);
@@ -44,6 +45,7 @@ Health.prototype.reduce = function() {
 	} else {
 		this.value *= 0.66;
 	}
+	this.updateView();
 };
 Health.prototype.updateView = function() {
 	this.element.style.width = Math.floor(this.viewWidth * this.value).toString() + 'px';
