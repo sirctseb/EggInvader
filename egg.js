@@ -34,6 +34,10 @@ Game.prototype.update = function(time) {
 		if(!this.recentCollision && this.enemies[i].checkCollision(this.mouseLocation)) {
 			this.health.reduce();
 			this.recentCollision = true;
+			// TODO visual feedback on rocket during refractory period
+			// TODO visual feedback on rocket on collision
+			// TODO visual feedback on enemy on collision
+			// TODO auditory feedback on collision
 			var this_ = this;
 			window.setTimeout(function() {
 				this_.recentCollision = false;
