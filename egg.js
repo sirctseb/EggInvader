@@ -10,6 +10,9 @@ var Game = function() {
 	this.lastTime = 0;
 	this.mouseLocation = {};
 	this.health = new Health();
+	this.recentCollision = false;
+	// min time between collisions in ms
+	this.COLLISION_REFRACTORY_TIME = 1000;
 	var this_ = this;
 	var mouseUpdate = function(event) {
 		this_.updateMouse(event);
@@ -28,8 +31,13 @@ Game.prototype.update = function(time) {
 	// udpate enemies
 	for(var i in this.enemies) {
 		this.enemies[i].update(delta);
-		if(this.enemies[i].checkCollision(this.mouseLocation)) {
+		if(!this.recentCollision && this.enemies[i].checkCollision(this.mouseLocation)) {
 			this.health.reduce();
+			this.recentCollision = true;
+			var this_ = this;
+			window.setTimeout(function() {
+				this_.recentCollision = false;
+			}, this.COLLISION_REFRACTORY_TIME);
 		}
 	}
 	this.lastTime = time;
@@ -69,9 +77,6 @@ var Enemy = function() {
 	this.velocity = 0.3;
 	// add view to body
 	document.body.appendChild(this.element);
-	this.recentCollision = false;
-	// time between collisions with the same enemy in ms
-	this.COLLISION_REFRACTORY_TIME = 1000;
 };
 Enemy.prototype.update = function(delta) {
 	// update location
@@ -86,17 +91,8 @@ Enemy.prototype.update = function(delta) {
 	this.element.style.left = (this.x - this.width/2).toString() + 'px';
 };
 Enemy.prototype.checkCollision = function(mouseLocation) {
-	// if there was a collision recently, disallow more collisions
-	if(this.recentCollision) return false;
 	var CURSOR_RADIUS = 48;
 	if(this.distSq(mouseLocation) < Math.pow(this.radius + CURSOR_RADIUS,2)) {
-		var this_ = this;
-		window.setTimeout(
-			function() {
-				console.log('resetting recentCollision');
-				this_.recentCollision = false;
-			}, this.COLLISION_REFRACTORY_TIME);
-		this.recentCollision = true;
 		return true;
 	}
 };
