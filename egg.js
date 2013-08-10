@@ -8,6 +8,17 @@ var Game = function() {
 		this.enemies.push(new Enemy());
 	}
 	this.lastTime = 0;
+	this.mouseLocation = {};
+	var this_ = this;
+	var mouseUpdate = function(event) {
+		this_.updateMouse(event);
+	};
+	document.addEventListener('mousemove', mouseUpdate);
+};
+Game.prototype.updateMouse = function(event) {
+	// store mouse location
+	this.mouseLocation.x = event.screenX;
+	this.mouseLocation.y = event.screenY;
 };
 // update the game state
 Game.prototype.update = function(time) {
