@@ -39,7 +39,10 @@ Enemy.prototype.update = function(delta) {
 	// update location
 	this.y += this.velocity*delta;
 	// loop to top of screen when we go off the bottom
-	if(this.y > window.innerHeight) this.y = 0;
+	if(this.y > window.innerHeight) {
+		this.y = 0;
+		this.x = randLeft();
+	}
 	// set style
 	this.element.style.top = this.y.toString() + 'px';
 	this.element.style.left = this.x.toString() + 'px';
