@@ -53,6 +53,9 @@ var Enemy = function() {
 	// location of enemy
 	this.x = randLeft();
 	this.y = randTop();
+	this.width = 128;
+	this.height = 128;
+	this.radius = 48;
 	// enemy view
 	this.element = document.createElement('div');
 	this.element.classList.add('enemy');
@@ -70,8 +73,8 @@ Enemy.prototype.update = function(delta) {
 		this.x = randLeft();
 	}
 	// set style
-	this.element.style.top = this.y.toString() + 'px';
-	this.element.style.left = this.x.toString() + 'px';
+	this.element.style.top = (this.y - this.height/2).toString() + 'px';
+	this.element.style.left = (this.x - this.width/2).toString() + 'px';
 };
 
 // start the game
