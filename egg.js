@@ -17,8 +17,8 @@ var Game = function() {
 };
 Game.prototype.updateMouse = function(event) {
 	// store mouse location
-	this.mouseLocation.x = event.screenX;
-	this.mouseLocation.y = event.screenY;
+	this.mouseLocation.x = event.pageX;
+	this.mouseLocation.y = event.pageY;
 };
 // update the game state
 Game.prototype.update = function(time) {
