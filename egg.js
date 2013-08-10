@@ -27,6 +27,7 @@ Game.prototype.update = function(time) {
 	// udpate enemies
 	for(var i in this.enemies) {
 		this.enemies[i].update(delta);
+		this.enemies[i].checkCollision(this.mouseLocation);
 	}
 	this.lastTime = time;
 	var this_ = this;
@@ -75,6 +76,15 @@ Enemy.prototype.update = function(delta) {
 	// set style
 	this.element.style.top = (this.y - this.height/2).toString() + 'px';
 	this.element.style.left = (this.x - this.width/2).toString() + 'px';
+};
+Enemy.prototype.checkCollision = function(mouseLocation) {
+	var CURSOR_RADIUS = 48;
+	if(this.distSq(mouseLocation) < Math.pow(this.radius + CURSOR_RADIUS,2)) {
+		// TODO collision
+	}
+};
+Enemy.prototype.distSq = function(location) {
+	return Math.pow(this.x - location.x,2) + Math.pow(this.y - location.y,2);
 };
 
 // start the game
