@@ -34,18 +34,19 @@ Game.prototype.update = function(time) {
 	}
 	this.lastTime = time;
 	var this_ = this;
-	// window.requestAnimationFrame(function(time) {this_.update(time)});
+	window.requestAnimationFrame(function(time) {this_.update(time)});
 };
 var Health = function() {
 	this.viewWidth = 200;
 	this.value = 1;
 	this.element = document.getElementById("health");
+	this.REDUCTION_FRACTION = 0.8;
 };
 Health.prototype.reduce = function() {
 	if(this.value > 0.5) {
-		this.value -= 0.1;
+		this.value -= 0.05;
 	} else {
-		this.value *= 0.66;
+		this.value *= this.REDUCTION_FRACTION;
 	}
 	this.updateView();
 };
@@ -68,6 +69,9 @@ var Enemy = function() {
 	this.velocity = 0.3;
 	// add view to body
 	document.body.appendChild(this.element);
+	this.recentCollision = false;
+	// time between collisions with the same enemy in ms
+	this.COLLISION_REFRACTORY_TIME = 1000;
 };
 Enemy.prototype.update = function(delta) {
 	// update location
@@ -82,8 +86,17 @@ Enemy.prototype.update = function(delta) {
 	this.element.style.left = (this.x - this.width/2).toString() + 'px';
 };
 Enemy.prototype.checkCollision = function(mouseLocation) {
+	// if there was a collision recently, disallow more collisions
+	if(this.recentCollision) return false;
 	var CURSOR_RADIUS = 48;
 	if(this.distSq(mouseLocation) < Math.pow(this.radius + CURSOR_RADIUS,2)) {
+		var this_ = this;
+		window.setTimeout(
+			function() {
+				console.log('resetting recentCollision');
+				this_.recentCollision = false;
+			}, this.COLLISION_REFRACTORY_TIME);
+		this.recentCollision = true;
 		return true;
 	}
 };
