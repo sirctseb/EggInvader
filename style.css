@@ -9,8 +9,17 @@ html {
 	background-image: url(images/asteroid.png);
 	position: absolute;
 }
+#health-label {
+	font-size: 24px;
+}
+#health-container {
+	width: 200px;
+	display: inline-block;
+	border: 1px solid black;
+	padding: 2px;
+}
 #health {
 	width: 200px;
 	height: 10px;
-	background-color: red;
+	background-color: black;
 }
