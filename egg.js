@@ -18,6 +18,13 @@ var Game = function() {
 		this_.updateMouse(event);
 	};
 	document.addEventListener('mousemove', mouseUpdate);
+	window.setTimeout(function() {this_.transition();}, Game.TRANSITION_TIME);
+};
+// the time in ms until the transition to baby theme
+Game.TRANSITION_TIME = 5000;
+Game.prototype.transition = function() {
+	console.log('hiiiiii!');
+	Enemy.respawnTypes = ['pacifier', 'bottle'];
 };
 Game.prototype.updateMouse = function(event) {
 	// store mouse location
@@ -88,6 +95,8 @@ Enemy.types = {
 	'bottle': {width: 58, height: 128},
 	'pacifier': {width: 128, height: 106}
 };
+// the types to choose from on respawn
+Enemy.respawnTypes = ['star', 'asteroid'];
 Enemy.prototype.setType = function(type) {
 	// make specific type
 	this.type = type;
@@ -107,7 +116,7 @@ Enemy.prototype.update = function(delta) {
 	if(this.y > window.innerHeight) {
 		this.y = 0;
 		this.x = randLeft();
-		this.setType(['star', 'asteroid'][Math.floor(Math.random()*2)]);
+		this.setType(Enemy.respawnTypes[Math.floor(Math.random()*2)]);
 	}
 	// set style
 	this.element.style.top = (this.y - this.height/2).toString() + 'px';
