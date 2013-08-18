@@ -7,22 +7,28 @@ html {
 	position: absolute;
 	width: 96px;
 	height: 128px;
-	-webkit-transition: -webkit-transform 0.5s;
 }
 #cursorleft {
 	display: inline-block;
 	background-image: url(images/rocketleft.png);
 	width: 47px;
 	height: 128px;
+	-webkit-transition: -webkit-transform 0.5s;
 }
 #cursorright {
 	display: inline-block;
 	background-image: url(images/rocketright.png);
 	width: 49px;
 	height: 128px;
+	-webkit-transition: -webkit-transform 0.5s;
 }
-#cursor.sperm {
-	-webkit-transform: rotate(720deg);
+#cursor.sperm #cursorleft {
+	-webkit-transform: rotate(-90deg);
+	-webkit-transform-origin: 100% 200%;
+}
+#cursor.sperm #cursorright {
+	-webkit-transform: rotate(90deg);
+	-webkit-transform-origin: 0% 200%;
 }
 .enemy {
 	height: 128px;
