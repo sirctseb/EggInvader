@@ -24,8 +24,8 @@ var Game = function() {
 // the time in ms until the transition to baby theme
 Game.TRANSITION_TIME = 5000;
 Game.prototype.transition = function() {
-	console.log('hiiiiii!');
 	Enemy.respawnTypes = ['pacifier', 'bottle'];
+	this.cursorImageDiv.classList.add('sperm');
 };
 Game.prototype.updateMouse = function(event) {
 	// store mouse location

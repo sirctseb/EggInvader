@@ -1,14 +1,28 @@
 html {
 	height: 100%;
 	width: 100%;
-	/*cursor: url(images/rocket.png) 48 64, hand;*/
 	cursor: none;
 }
 #cursor {
 	position: absolute;
-	background-image: url(images/rocket.png);
 	width: 96px;
 	height: 128px;
+	-webkit-transition: -webkit-transform 0.5s;
+}
+#cursorleft {
+	display: inline-block;
+	background-image: url(images/rocketleft.png);
+	width: 47px;
+	height: 128px;
+}
+#cursorright {
+	display: inline-block;
+	background-image: url(images/rocketright.png);
+	width: 49px;
+	height: 128px;
+}
+#cursor.sperm {
+	-webkit-transform: rotate(720deg);
 }
 .enemy {
 	height: 128px;
