@@ -5,7 +5,7 @@ var Game = function() {
 	this.NUM_ENEMIES = 5;
 	// generate enemies
 	for(var i = 0; i < this.NUM_ENEMIES; i++) {
-		this.enemies.push(new Enemy());
+		this.enemies.push(new Enemy({'type': 'asteroid'}));
 	}
 	this.lastTime = 0;
 	this.mouseLocation = {};
@@ -67,20 +67,38 @@ Health.prototype.updateView = function() {
 };
 
 // Object to represent an enemy
-var Enemy = function() {
+var Enemy = function(options) {
 	// location of enemy
 	this.x = randLeft();
 	this.y = randTop();
-	this.width = 128;
-	this.height = 128;
+	// TODO customize radius for different types
 	this.radius = 48;
 	// enemy view
 	this.element = document.createElement('div');
 	this.element.classList.add('enemy');
+	this.setType(options.type);
 	// speed of enemy
 	this.velocity = 0.3;
 	// add view to body
 	document.body.appendChild(this.element);
+};
+Enemy.types = {
+	'star': {width: 128, height: 144},
+	'asteroid': {width: 128, height: 128},
+	'bottle': {width: 58, height: 128},
+	'pacifier': {width: 128, height: 106}
+};
+Enemy.prototype.setType = function(type) {
+	// make specific type
+	this.type = type;
+	this.width = Enemy.types[type].width;
+	this.height = Enemy.types[type].height;
+	this.updateViewType();
+};
+Enemy.prototype.updateViewType = function() {
+	this.element.style.width = '' + this.width + 'px';
+	this.element.style.height = '' + this.height + 'px';
+	this.element.style.backgroundImage = 'url(images/' + this.type + '.png)';
 };
 Enemy.prototype.update = function(delta) {
 	// update location
@@ -89,6 +107,7 @@ Enemy.prototype.update = function(delta) {
 	if(this.y > window.innerHeight) {
 		this.y = 0;
 		this.x = randLeft();
+		this.setType(['star', 'asteroid'][Math.floor(Math.random()*2)]);
 	}
 	// set style
 	this.element.style.top = (this.y - this.height/2).toString() + 'px';
