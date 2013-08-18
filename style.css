@@ -1,7 +1,14 @@
 html {
 	height: 100%;
 	width: 100%;
-	cursor: url(images/rocket.png) 48 64, hand;
+	/*cursor: url(images/rocket.png) 48 64, hand;*/
+	cursor: none;
+}
+#cursor {
+	position: absolute;
+	background-image: url(images/rocket.png);
+	width: 96px;
+	height: 128px;
 }
 .enemy {
 	height: 128px;

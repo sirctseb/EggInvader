@@ -11,6 +11,7 @@ var Game = function() {
 	this.mouseLocation = {};
 	this.health = new Health();
 	this.recentCollision = false;
+	this.cursorImageDiv = document.getElementById("cursor");
 	// min time between collisions in ms
 	this.COLLISION_REFRACTORY_TIME = 1000;
 	var this_ = this;
@@ -30,6 +31,9 @@ Game.prototype.updateMouse = function(event) {
 	// store mouse location
 	this.mouseLocation.x = event.pageX;
 	this.mouseLocation.y = event.pageY;
+	// update cursor image location
+	this.cursorImageDiv.style.left = '' + (event.pageX - 48) + 'px';
+	this.cursorImageDiv.style.top = '' + (event.pageY - 64) + 'px';
 };
 // update the game state
 Game.prototype.update = function(time) {
