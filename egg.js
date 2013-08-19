@@ -12,6 +12,7 @@ var Game = function() {
 	this.health = new Health();
 	this.recentCollision = false;
 	this.cursorImageDiv = document.getElementById("cursor");
+	this.eggWrapperDiv = document.getElementById("egg-wrapper");
 	// min time between collisions in ms
 	this.COLLISION_REFRACTORY_TIME = 1000;
 	var this_ = this;
@@ -25,6 +26,9 @@ var Game = function() {
 		},
 		Game.TRANSITION_TEXT_TIME);
 	window.setTimeout(function() {this_.transition();}, Game.TRANSITION_TIME);
+	document.getElementById('egg').addEventListener('mouseover', function() {
+		this_.eggWrapperDiv.classList.add('hit');
+	});
 };
 // the time in ms until the transition to baby theme
 Game.TRANSITION_TIME = 5000;
@@ -32,6 +36,7 @@ Game.TRANSITION_TEXT_TIME = Game.TRANSITION_TIME - 2000;
 Game.prototype.transition = function() {
 	Enemy.respawnTypes = ['pacifier', 'bottle'];
 	this.cursorImageDiv.classList.add('sperm');
+	this.eggWrapperDiv.classList.add('transition');
 };
 Game.prototype.updateMouse = function(event) {
 	// store mouse location
