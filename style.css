@@ -3,6 +3,9 @@ html {
 	width: 100%;
 	cursor: none;
 }
+html.hit {
+	cursor: default;
+}
 #cursor {
 	position: absolute;
 	width: 96px;
@@ -24,6 +27,11 @@ html {
 }
 #cursor.sperm {
 	background-image: url(images/sperm.png);
+}
+#cursor.hit {
+	-webkit-transition: top 10s, left 10s;
+	top: 50%;
+	left: 50%;
 }
 #cursor.sperm #cursorleft {
 	-webkit-transform: rotate(-90deg);

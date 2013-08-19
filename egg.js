@@ -27,7 +27,15 @@ var Game = function() {
 		Game.TRANSITION_TEXT_TIME);
 	window.setTimeout(function() {this_.transition();}, Game.TRANSITION_TIME);
 	document.getElementById('egg').addEventListener('mouseover', function() {
+		// add hit to egg wrapper to start final animation
 		this_.eggWrapperDiv.classList.add('hit');
+		// stop moving the cursor image over the cursor
+		document.removeEventListener('mousemove', mouseUpdate);
+		// add hit class to html to show normal cursor
+		document.documentElement.classList.add('hit');
+		this_.cursorImageDiv.style.top = '';
+		this_.cursorImageDiv.style.left = '';
+		this_.cursorImageDiv.classList.add('hit');
 	});
 };
 // the time in ms until the transition to baby theme
