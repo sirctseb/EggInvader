@@ -22,6 +22,9 @@ html {
 	height: 128px;
 	-webkit-transition: -webkit-transform 0.5s;
 }
+#cursor.sperm {
+	background-image: url(images/sperm.png);
+}
 #cursor.sperm #cursorleft {
 	-webkit-transform: rotate(-90deg);
 	-webkit-transform-origin: 100% 200%;
