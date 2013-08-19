@@ -13,14 +13,14 @@ html {
 	background-image: url(images/rocketleft.png);
 	width: 47px;
 	height: 128px;
-	-webkit-transition: -webkit-transform 0.5s;
+	-webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
 }
 #cursorright {
 	display: inline-block;
 	background-image: url(images/rocketright.png);
 	width: 49px;
 	height: 128px;
-	-webkit-transition: -webkit-transform 0.5s;
+	-webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
 }
 #cursor.sperm {
 	background-image: url(images/sperm.png);
@@ -28,10 +28,12 @@ html {
 #cursor.sperm #cursorleft {
 	-webkit-transform: rotate(-90deg);
 	-webkit-transform-origin: 100% 200%;
+	opacity: 0;
 }
 #cursor.sperm #cursorright {
 	-webkit-transform: rotate(90deg);
 	-webkit-transform-origin: 0% 200%;
+	opacity: 0;
 }
 .enemy {
 	height: 128px;
