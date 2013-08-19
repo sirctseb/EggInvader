@@ -19,10 +19,16 @@ var Game = function() {
 		this_.updateMouse(event);
 	};
 	document.addEventListener('mousemove', mouseUpdate);
+	window.setTimeout(
+		function() {
+			document.getElementById('transition-message').classList.add('transition');
+		},
+		Game.TRANSITION_TEXT_TIME);
 	window.setTimeout(function() {this_.transition();}, Game.TRANSITION_TIME);
 };
 // the time in ms until the transition to baby theme
 Game.TRANSITION_TIME = 5000;
+Game.TRANSITION_TEXT_TIME = Game.TRANSITION_TIME - 2000;
 Game.prototype.transition = function() {
 	Enemy.respawnTypes = ['pacifier', 'bottle'];
 	this.cursorImageDiv.classList.add('sperm');
