@@ -16,14 +16,14 @@ html.hit {
 	background-image: url(images/rocketleft.png);
 	width: 47px;
 	height: 128px;
-	-webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
+	-webkit-transition: opacity 2s, -webkit-transform 2s;
 }
 #cursorright {
 	display: inline-block;
 	background-image: url(images/rocketright.png);
 	width: 49px;
 	height: 128px;
-	-webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
+	-webkit-transition: opacity 2s, -webkit-transform 2s;
 }
 #cursor.sperm {
 	background-image: url(images/sperm.png);
