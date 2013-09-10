@@ -80,6 +80,11 @@ html.hit {
 	width: 564px;
 	height: 473px;
 }
+#egg.showMonster {
+	background-image: url(images/asteroid.png);
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
 #health-label {
 	font-size: 24px;
 }

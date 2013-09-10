@@ -35,6 +35,7 @@ var Game = function() {
 	document.getElementById('egg').addEventListener('mouseover', function() {
 		// add hit to egg wrapper to start final animation
 		this_.eggWrapperDiv.classList.add('hit');
+		document.getElementById('egg').classList.add('showMonster');
 		// stop moving the cursor image over the cursor
 		document.removeEventListener('mousemove', mouseUpdate);
 		// add hit class to html to show normal cursor
