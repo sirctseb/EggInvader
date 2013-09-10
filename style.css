@@ -74,9 +74,9 @@ html.hit {
 	bottom: 20%;
 }
 #egg {
+	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	background-image: url(images/egg.png);
 	width: 564px;
 	height: 473px;
 }
