@@ -43,6 +43,15 @@ html.hit {
 	-webkit-transform-origin: 0% 200%;
 	opacity: 0;
 }
+#cursor.damage {
+	-webkit-animation: damage-blink 0.3s infinite;
+}
+@-webkit-keyframes damage-blink {
+	0% {opacity: 1;}
+	49% {opacity: 1;}
+	50% {opacity: 0;}
+	100% {opacity: 0;}
+}
 #transition-message {
 	display: none;
 	position: fixed;

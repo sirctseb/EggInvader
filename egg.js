@@ -82,6 +82,7 @@ Game.prototype.update = function(time) {
 	for(var i in this.enemies) {
 		this.enemies[i].update(delta);
 		if(!this.recentCollision && this.enemies[i].checkCollision(this.mouseLocation)) {
+			document.getElementById('cursor').classList.add('damage');
 			this.health.reduce();
 			this.recentCollision = true;
 			// TODO visual feedback on rocket during refractory period
@@ -90,6 +91,7 @@ Game.prototype.update = function(time) {
 			// TODO auditory feedback on collision
 			var this_ = this;
 			window.setTimeout(function() {
+				document.getElementById('cursor').classList.remove('damage');
 				this_.recentCollision = false;
 			}, this.COLLISION_REFRACTORY_TIME);
 		}
