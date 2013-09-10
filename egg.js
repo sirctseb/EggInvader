@@ -13,6 +13,7 @@ var Game = function() {
 	this.recentCollision = false;
 	this.cursorImageDiv = document.getElementById("cursor");
 	this.eggWrapperDiv = document.getElementById("egg-wrapper");
+	this.endGame = false;
 	// min time between collisions in ms
 	this.COLLISION_REFRACTORY_TIME = 1000;
 	var this_ = this;
@@ -41,6 +42,12 @@ var Game = function() {
 		this_.cursorImageDiv.style.top = '';
 		this_.cursorImageDiv.style.left = '';
 		this_.cursorImageDiv.classList.add('hit');
+		if(!this_.endGame) {
+			for(var i = 0; i < this_.NUM_ENEMIES; i++){
+				this_.enemies[i].element.parentNode.removeChild(this_.enemies[i].element);
+			}
+		}
+		this_.endGame = true;
 	});
 };
 // the time in ms until the transition to baby theme
@@ -82,7 +89,9 @@ Game.prototype.update = function(time) {
 	}
 	this.lastTime = time;
 	var this_ = this;
-	window.requestAnimationFrame(function(time) {this_.update(time)});
+	if(!this.endGame){
+		window.requestAnimationFrame(function(time) {this_.update(time)});	
+	}
 };
 var Health = function() {
 	this.viewWidth = 200;
