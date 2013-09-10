@@ -23,8 +23,13 @@ var Game = function() {
 	window.setTimeout(
 		function() {
 			document.getElementById('transition-message').classList.add('transition');
+			window.setTimeout(
+				function() {
+					document.getElementById('transition-message').classList.remove('transition');
+				}, Game.DISPLAY_TIME);
 		},
 		Game.TRANSITION_TEXT_TIME);
+
 	window.setTimeout(function() {this_.transition();}, Game.TRANSITION_TIME);
 	document.getElementById('egg').addEventListener('mouseover', function() {
 		// add hit to egg wrapper to start final animation
@@ -39,8 +44,9 @@ var Game = function() {
 	});
 };
 // the time in ms until the transition to baby theme
-Game.TRANSITION_TIME = 5000;
+Game.TRANSITION_TIME = 10000;
 Game.TRANSITION_TEXT_TIME = Game.TRANSITION_TIME - 2000;
+Game.DISPLAY_TIME = 3000;
 Game.prototype.transition = function() {
 	Enemy.respawnTypes = ['pacifier', 'bottle'];
 	this.cursorImageDiv.classList.add('sperm');
