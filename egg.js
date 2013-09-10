@@ -49,12 +49,18 @@ var Game = function() {
 			}
 		}
 		this_.endGame = true;
+		window.setTimeout(function() {
+			document.getElementById('transition-message').innerHTML = 'Touchdown expected 2013-3-25';
+			document.getElementById('transition-message').classList.add('transition');
+		},
+		Game.DUE_DATE_DELAY);
 	});
 };
 // the time in ms until the transition to baby theme
 Game.TRANSITION_TIME = 10000;
 Game.TRANSITION_TEXT_TIME = Game.TRANSITION_TIME - 2000;
 Game.DISPLAY_TIME = 3000;
+Game.DUE_DATE_DELAY = 10000;
 Game.prototype.transition = function() {
 	Enemy.respawnTypes = ['pacifier', 'bottle'];
 	this.cursorImageDiv.classList.add('sperm');
