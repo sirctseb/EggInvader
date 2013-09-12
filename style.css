@@ -108,3 +108,10 @@ html.hit {
 	height: 10px;
 	background-color: black;
 }
+
+.projectile {
+	position: absolute;
+	width: 2px;
+	height: 10px;
+	background-color: red;
+}

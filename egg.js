@@ -55,6 +55,12 @@ var Game = function() {
 		},
 		Game.DUE_DATE_DELAY);
 	});
+
+	// mouse click handler
+	document.documentElement.addEventListener('mousedown', function(event) {
+		// create a projectile
+		var projectile = new Projectile({x: event.pageX, y: event.pageY});
+	});
 };
 // the time in ms until the transition to baby theme
 Game.TRANSITION_TIME = 10000;
@@ -102,6 +108,7 @@ Game.prototype.update = function(time) {
 		window.requestAnimationFrame(function(time) {this_.update(time)});	
 	}
 };
+
 var Health = function() {
 	this.viewWidth = 200;
 	this.value = 1;
@@ -177,6 +184,19 @@ Enemy.prototype.checkCollision = function(mouseLocation) {
 };
 Enemy.prototype.distSq = function(location) {
 	return Math.pow(this.x - location.x,2) + Math.pow(this.y - location.y,2);
+};
+
+var Projectile = function(location) {
+	// set initial location
+	this.x = location.x;
+	this.y = location.y;
+
+	// create dom element
+	this.element = document.createElement('div')
+	this.element.classList.add('projectile');
+	document.body.appendChild(this.element);
+	this.element.style.left = this.x + 'px';
+	this.element.style.top = this.y + 'px';
 };
 
 // start the game
