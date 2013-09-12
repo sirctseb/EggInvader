@@ -2,6 +2,7 @@ html {
 	height: 100%;
 	width: 100%;
 	cursor: none;
+	-webkit-user-select: none;
 }
 html.hit {
 	cursor: default;
