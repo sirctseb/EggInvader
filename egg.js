@@ -2,6 +2,8 @@
 var Game = function() {
 	// the list of enemies
 	this.enemies = [];
+	// the list of projectiles
+	this.projectiles = [];
 	this.NUM_ENEMIES = 5;
 	// generate enemies
 	for(var i = 0; i < this.NUM_ENEMIES; i++) {
@@ -60,6 +62,7 @@ var Game = function() {
 	document.documentElement.addEventListener('mousedown', function(event) {
 		// create a projectile
 		var projectile = new Projectile({x: event.pageX, y: event.pageY});
+		this_.projectiles.push(projectile);
 	});
 };
 // the time in ms until the transition to baby theme
@@ -101,6 +104,10 @@ Game.prototype.update = function(time) {
 				this_.recentCollision = false;
 			}, this.COLLISION_REFRACTORY_TIME);
 		}
+	}
+	// update projectiles
+	for(var i in this.projectiles) {
+		this.projectiles[i].update(delta);
 	}
 	this.lastTime = time;
 	var this_ = this;
@@ -196,6 +203,12 @@ var Projectile = function(location) {
 	this.element.classList.add('projectile');
 	document.body.appendChild(this.element);
 	this.element.style.left = this.x + 'px';
+	this.element.style.top = this.y + 'px';
+
+	this.velocity = 1;
+};
+Projectile.prototype.update = function(delta) {
+	this.y -= this.velocity * delta;
 	this.element.style.top = this.y + 'px';
 };
 
