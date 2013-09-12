@@ -104,10 +104,27 @@ Game.prototype.update = function(time) {
 				this_.recentCollision = false;
 			}, this.COLLISION_REFRACTORY_TIME);
 		}
+		// check for collisions with projectiles
+		for(var j in this.projectiles) {
+			if(this.enemies[i].checkCollision(this.projectiles[j])) {
+				// reset the enemy
+				this.enemies[i].reset();
+
+				// destroy the projectile
+				this.projectiles[j].destroy();
+				this.projectiles.splice(this.projectiles.indexOf(this.projectiles[j]), 1);
+			}
+		}
 	}
 	// update projectiles
+	var destroyed = [];
 	for(var i in this.projectiles) {
-		this.projectiles[i].update(delta);
+		if(this.projectiles[i].update(delta)) {
+			destroyed.push(this.projectiles[i]);
+		}
+	}
+	for(var i in destroyed) {
+		this.projectiles.splice(this.projectiles.indexOf(destroyed[i]), 1);
 	}
 	this.lastTime = time;
 	var this_ = this;
@@ -175,10 +192,11 @@ Enemy.prototype.update = function(delta) {
 	this.y += this.velocity*delta;
 	// loop to top of screen when we go off the bottom
 	if(this.y > window.innerHeight) {
-		this.y = 0;
-		this.x = randLeft();
-		this.setType(Enemy.respawnTypes[Math.floor(Math.random()*2)]);
+		this.reset();
 	}
+	this.updateLocationStyle();
+};
+Enemy.prototype.updateLocationStyle = function() {
 	// set style
 	this.element.style.top = (this.y - this.height/2).toString() + 'px';
 	this.element.style.left = (this.x - this.width/2).toString() + 'px';
@@ -191,6 +209,12 @@ Enemy.prototype.checkCollision = function(mouseLocation) {
 };
 Enemy.prototype.distSq = function(location) {
 	return Math.pow(this.x - location.x,2) + Math.pow(this.y - location.y,2);
+};
+Enemy.prototype.reset = function() {
+	this.y = 0;
+	this.x = randLeft();
+	this.updateLocationStyle();
+	this.setType(Enemy.respawnTypes[Math.floor(Math.random()*2)]);
 };
 
 var Projectile = function(location) {
@@ -207,9 +231,21 @@ var Projectile = function(location) {
 
 	this.velocity = 1;
 };
+/**
+ * returns true if projectile is destroyed by update
+ */
 Projectile.prototype.update = function(delta) {
 	this.y -= this.velocity * delta;
 	this.element.style.top = this.y + 'px';
+	if(this.y < 0) {
+		this.destroy();
+		return true;
+	}
+	return false;
+};
+Projectile.prototype.destroy = function() {
+	document.body.removeChild(this.element);
+	this.element = null;
 };
 
 // start the game

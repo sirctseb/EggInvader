@@ -111,7 +111,7 @@ html.hit {
 
 .projectile {
 	position: absolute;
-	width: 2px;
+	width: 4px;
 	height: 10px;
-	background-color: red;
+	background-color: black;
 }
