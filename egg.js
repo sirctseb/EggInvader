@@ -253,8 +253,10 @@ var startgame = function() {
 	// create the game object
 	var game = new Game();
 	// TODO see if there is a better way to get a method callback
-	window.requestAnimationFrame(function(time) {game.update(time)});
-	// window.requestAnimationFrame(game.update);
+	if(!window.requestAnimationFrame) {
+		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
+	}
+	window.requestAnimationFrame(function(time) {game.lastTime = time; game.update(time)});
 };
 
 // random numbers within window width/height
