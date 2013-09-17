@@ -158,7 +158,9 @@ html.hit {
 }
 
 #egg.showMonster {
-	background-image: url(images/asteroid.png);
+	-webkit-transition: background-image 10s;
+	transition: background-image 10s;
+	background-image: url(images/sono.png);
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
 }
