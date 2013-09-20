@@ -52,7 +52,7 @@ var Game = function() {
 		}
 		this_.endGame = true;
 		window.setTimeout(function() {
-			document.getElementById('transition-message').innerHTML = 'Touchdown expected 2013-3-25';
+			document.getElementById('transition-message').innerHTML = 'Touchdown expected 2014-3-25';
 			document.getElementById('transition-message').classList.add('transition');
 		},
 		Game.DUE_DATE_DELAY);
