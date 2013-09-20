@@ -66,7 +66,7 @@ var Game = function() {
 	});
 };
 // the time in ms until the transition to baby theme
-Game.TRANSITION_TIME = 10000;
+Game.TRANSITION_TIME = 60000;
 Game.TRANSITION_TEXT_TIME = Game.TRANSITION_TIME - 2000;
 Game.DISPLAY_TIME = 3000;
 Game.DUE_DATE_DELAY = 10000;
