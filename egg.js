@@ -23,6 +23,17 @@ var Game = function() {
 		this_.updateMouse(event);
 	};
 	document.addEventListener('mousemove', mouseUpdate);
+	document.addEventListener('touchmove', function(tchevt) {
+		tchevt.preventDefault();
+		// pass a higher position so you can see it
+		mouseUpdate({pageX: tchevt.touches[0].pageX, pageY: tchevt.touches[0].pageY - 150});
+		// check if touch is over egg
+		var x = tchevt.touches[0].pageX - this_.eggWrapperDiv.offsetLeft;
+		var y = tchevt.touches[0].pageY - this_.eggWrapperDiv.offsetTop - 100;
+		if(x < this_.eggWrapperDiv.offsetWidth && y < this_.eggWrapperDiv.offsetHeight) {
+			overEggFunction();
+		}
+	});
 	window.setTimeout(
 		function() {
 			document.getElementById('transition-message').classList.add('transition');
@@ -34,7 +45,7 @@ var Game = function() {
 		Game.TRANSITION_TEXT_TIME);
 
 	window.setTimeout(function() {this_.transition();}, Game.TRANSITION_TIME);
-	document.getElementById('egg').addEventListener('mouseover', function() {
+	var overEggFunction = function() {
 		// add hit to egg wrapper to start final animation
 		this_.eggWrapperDiv.classList.add('hit');
 		document.getElementById('egg').classList.add('showMonster');
@@ -56,13 +67,24 @@ var Game = function() {
 			document.getElementById('transition-message').classList.add('transition');
 		},
 		Game.DUE_DATE_DELAY);
-	});
+	};
+	document.getElementById('egg').addEventListener('mouseover', overEggFunction);
 
 	// mouse click handler
-	document.documentElement.addEventListener('mousedown', function(event) {
+	var handleClick = function(event) {
 		// create a projectile
 		var projectile = new Projectile({x: event.pageX, y: event.pageY});
 		this_.projectiles.push(projectile);
+	};
+	document.documentElement.addEventListener('mousedown', handleClick);
+	document.documentElement.addEventListener('touchstart', function(tchevent) {
+		// also do a mouse update
+		mouseUpdate({pageX: tchevent.touches[0].pageX, pageY: tchevent.touches[0].pageY - 150});
+		tchevent.preventDefault();
+		handleClick(tchevent.touches[0]);
+	});
+	document.documentElement.addEventListener('dblclick', function(event) {
+		event.preventDefault();
 	});
 };
 // the time in ms until the transition to baby theme
