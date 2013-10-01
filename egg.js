@@ -1,3 +1,27 @@
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
 // Object to represent the game state
 var Game = function() {
 	// the list of enemies
@@ -15,18 +39,19 @@ var Game = function() {
 	this.recentCollision = false;
 	this.cursorImageDiv = document.getElementById("cursor");
 	this.eggWrapperDiv = document.getElementById("egg-wrapper");
+	this.eggHit = false;
 	this.endGame = false;
 	// min time between collisions in ms
 	this.COLLISION_REFRACTORY_TIME = 1000;
 	var this_ = this;
-	var mouseUpdate = function(event) {
+	this_.mouseUpdate = function(event) {
 		this_.updateMouse(event);
 	};
-	document.addEventListener('mousemove', mouseUpdate);
+	document.addEventListener('mousemove', this_.mouseUpdate);
 	document.addEventListener('touchmove', function(tchevt) {
 		tchevt.preventDefault();
 		// pass a higher position so you can see it
-		mouseUpdate({pageX: tchevt.touches[0].pageX, pageY: tchevt.touches[0].pageY - 150});
+		this_.updateMouse({pageX: tchevt.touches[0].pageX, pageY: tchevt.touches[0].pageY - 150});
 		// check if touch is over egg
 		var x = tchevt.touches[0].pageX - this_.eggWrapperDiv.offsetLeft;
 		var y = tchevt.touches[0].pageY - this_.eggWrapperDiv.offsetTop - 100;
@@ -46,27 +71,7 @@ var Game = function() {
 
 	window.setTimeout(function() {this_.transition();}, Game.TRANSITION_TIME);
 	var overEggFunction = function() {
-		// add hit to egg wrapper to start final animation
-		this_.eggWrapperDiv.classList.add('hit');
-		document.getElementById('egg').classList.add('showMonster');
-		// stop moving the cursor image over the cursor
-		document.removeEventListener('mousemove', mouseUpdate);
-		// add hit class to html to show normal cursor
-		document.documentElement.classList.add('hit');
-		this_.cursorImageDiv.style.top = '';
-		this_.cursorImageDiv.style.left = '';
-		this_.cursorImageDiv.classList.add('hit');
-		if(!this_.endGame) {
-			for(var i = 0; i < this_.NUM_ENEMIES; i++){
-				this_.enemies[i].element.parentNode.removeChild(this_.enemies[i].element);
-			}
-		}
-		this_.endGame = true;
-		window.setTimeout(function() {
-			document.getElementById('transition-message').innerHTML = 'Touchdown expected 2014-3-25';
-			document.getElementById('transition-message').classList.add('transition');
-		},
-		Game.DUE_DATE_DELAY);
+		this_.overEggHandler();
 	};
 	document.getElementById('egg').addEventListener('mouseover', overEggFunction);
 
@@ -79,7 +84,7 @@ var Game = function() {
 	document.documentElement.addEventListener('mousedown', handleClick);
 	document.documentElement.addEventListener('touchstart', function(tchevent) {
 		// also do a mouse update
-		mouseUpdate({pageX: tchevent.touches[0].pageX, pageY: tchevent.touches[0].pageY - 150});
+		this_.updateMouse({pageX: tchevent.touches[0].pageX, pageY: tchevent.touches[0].pageY - 150});
 		tchevent.preventDefault();
 		handleClick(tchevent.touches[0]);
 	});
@@ -88,7 +93,7 @@ var Game = function() {
 	});
 };
 // the time in ms until the transition to baby theme
-Game.TRANSITION_TIME = 60000;
+Game.TRANSITION_TIME = 30000;
 Game.TRANSITION_TEXT_TIME = Game.TRANSITION_TIME - 2000;
 Game.DISPLAY_TIME = 3000;
 Game.DUE_DATE_DELAY = 10000;
@@ -96,6 +101,13 @@ Game.prototype.transition = function() {
 	Enemy.respawnTypes = ['pacifier', 'bottle'];
 	this.cursorImageDiv.classList.add('sperm');
 	this.eggWrapperDiv.classList.add('transition');
+	// if we haven't moved into the egg after the transition time, force it
+	var this_ = this;
+	window.setTimeout(function() {
+		if(!this_.eggHit) {
+			this_.overEggHandler();
+		}
+	}, 10000); // 10 seconds from css
 };
 Game.prototype.updateMouse = function(event) {
 	// store mouse location
@@ -104,6 +116,35 @@ Game.prototype.updateMouse = function(event) {
 	// update cursor image location
 	this.cursorImageDiv.style.left = '' + (event.pageX - 48) + 'px';
 	this.cursorImageDiv.style.top = '' + (event.pageY - 64) + 'px';
+};
+Game.prototype.overEggHandler = function(event) {
+	var this_ = this;
+	if(this_.eggHit) return;
+	this_.eggHit = true;
+	// add hit to egg wrapper to start final animation
+	this_.eggWrapperDiv.classList.add('hit');
+	document.getElementById('egg').classList.add('showMonster');
+	// stop moving the cursor image over the cursor
+	document.removeEventListener('mousemove', this_.mouseUpdate);
+	// add hit class to html to show normal cursor
+	document.documentElement.classList.add('hit');
+		this_.cursorImageDiv.classList.add('hit');
+	this_.cursorImageDiv.style.top = '50%';
+	this_.cursorImageDiv.style.left = '50%';
+	// this_.cursorImageDiv.classList.add('prehit');
+	// window.setTimeout(function() {
+	// }, 1);
+	if(!this_.endGame) {
+		for(var i = 0; i < this_.NUM_ENEMIES; i++){
+			this_.enemies[i].element.parentNode.removeChild(this_.enemies[i].element);
+		}
+	}
+	this_.endGame = true;
+	window.setTimeout(function() {
+		document.getElementById('transition-message').innerHTML = 'Touchdown expected 2014-3-25';
+		document.getElementById('transition-message').classList.add('transition');
+	},
+	Game.DUE_DATE_DELAY);
 };
 // update the game state
 Game.prototype.update = function(time) {
@@ -288,3 +329,87 @@ var randTop = function() {
 var randLeft = function() {
 	return Math.floor((Math.random()*window.innerWidth) + 1);
 };
+
+(function () {
+
+if (typeof window.Element === "undefined" || "classList" in document.documentElement) return;
+
+var prototype = Array.prototype,
+    indexOf = prototype.indexOf,
+    slice = prototype.slice,
+    push = prototype.push,
+    splice = prototype.splice,
+    join = prototype.join;
+
+function DOMTokenList(el) {  
+  this._element = el;
+  if (el.className != this._classCache) {
+    this._classCache = el.className;
+
+    if (!this._classCache) return;
+    
+      // The className needs to be trimmed and split on whitespace
+      // to retrieve a list of classes.
+      var classes = this._classCache.replace(/^\s+|\s+$/g,'').split(/\s+/),
+        i;
+    for (i = 0; i < classes.length; i++) {
+      push.call(this, classes[i]);
+    }
+  }
+};
+
+function setToClassName(el, classes) {
+  el.className = classes.join(' ');
+}
+
+DOMTokenList.prototype = {
+  add: function(token) {
+    if(this.contains(token)) return;
+    push.call(this, token);
+    setToClassName(this._element, slice.call(this, 0));
+  },
+  contains: function(token) {
+    return indexOf.call(this, token) !== -1;
+  },
+  item: function(index) {
+    return this[index] || null;
+  },
+  remove: function(token) {
+    var i = indexOf.call(this, token);
+     if (i === -1) {
+       return;
+     }
+    splice.call(this, i, 1);
+    setToClassName(this._element, slice.call(this, 0));
+  },
+  toString: function() {
+    return join.call(this, ' ');
+  },
+  toggle: function(token) {
+    if (!this.contains(token)) {
+      this.add(token);
+    } else {
+      this.remove(token);
+    }
+
+    return this.contains(token);
+  }
+};
+
+window.DOMTokenList = DOMTokenList;
+
+function defineElementGetter (obj, prop, getter) {
+	if (Object.defineProperty) {
+		Object.defineProperty(obj, prop,{
+			get : getter
+		})
+	} else {					
+		obj.__defineGetter__(prop, getter);
+	}
+}
+
+defineElementGetter(Element.prototype, 'classList', function () {
+  return new DOMTokenList(this);			
+});
+
+})();
